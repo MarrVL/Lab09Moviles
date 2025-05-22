@@ -1,5 +1,7 @@
 package com.example.lab09
 
+import ScreenPost
+import ScreenPosts
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -13,7 +15,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.navigation.compose.rememberNavController
-import com.example.lab09.ui.theme.Lab09Theme
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import androidx.compose.material.icons.Icons
@@ -32,6 +33,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 
 
 class MainActivity : ComponentActivity() {
@@ -39,29 +41,25 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            Lab09Theme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
-            }
+            ProgPrincipal9()
         }
     }
 }
+
 
 @Composable
 fun ProgPrincipal9() {
     val urlBase = "https://json-placeholder.mock.beeceptor.com/"
     val retrofit = Retrofit.Builder().baseUrl(urlBase)
         .addConverterFactory(GsonConverterFactory.create()).build()
+    val servicio = retrofit.create(PostApiService::class.java)
     val navController = rememberNavController()
 
     Scaffold(
         topBar =    { BarraSuperior() },
         bottomBar = { BarraInferior(navController) },
         content =   { paddingValues -> Contenido(paddingValues, navController, servicio) }
+
     )
 }
 
@@ -128,3 +126,9 @@ fun Contenido(
         }
     }
 }
+
+@Composable
+fun ScreenInicio() {
+    Text("INICIO")
+}
+
